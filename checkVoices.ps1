@@ -2,10 +2,12 @@
 # for testing voices for preference
 
 $rootPath = Get-Location
-$ankiPath = Join-Path $rootPath "anki"
+$sourcePath = "E:\ai-work\French\production-sources"
+$audioPath = Join-Path $sourcePath "audio"
+New-Item -ItemType Directory -Force -Path $audioPath | Out-Null
 
 $narakeetApiKey = (Get-Content -Path (Join-Path $rootPath "narakeet.api") -Raw).Trim()
-$french = Get-Content -Path (Join-Path $ankiPath "French.txt") -Encoding UTF8 -TotalCount 1
+$french = Get-Content -Path (Join-Path $sourcePath "French.txt") -Encoding UTF8 -TotalCount 1
 $voices = Get-Content -Path (Join-Path $rootPath "voices.dat") | Where-Object { $_ -and $_[0] -ne '#' }
 
 foreach ($voice in $voices) {
@@ -17,5 +19,5 @@ foreach ($voice in $voices) {
         --script "$french" `
         --voice $voice `
         --output-type mp3 `
-        --output (Join-Path $ankiPath "$voice.mp3")
+        --output (Join-Path $audioPath "$voice.mp3")
 }
